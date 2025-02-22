@@ -1,12 +1,15 @@
 class TasksController < ApplicationController
-    before_action :set_task, only: [:show,:edit, :update, :delete, :index]
+    before_action :set_task, only: [:show,:edit, :update, :delete]
 
     def index
         @tasks = Task.all
     end
 
     def new
-        @task =Task.new
+        @task =Task.new()
+    end
+
+    def show
     end
 
     def create
@@ -27,6 +30,11 @@ class TasksController < ApplicationController
         else
             render :edit
         end
+    end
+
+    def delete
+        @task.destroy
+        redirect_to @tasks, notice:"Task deleted succesfully"
     end
 
     private

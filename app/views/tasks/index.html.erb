@@ -1,0 +1,15 @@
+<% if @tasks.empty? %>
+  <p>No tasks available.</p>
+<% else %>
+  <ul>
+    <% @tasks.each do |task| %>
+      <li>
+        <strong><%= task.name %></strong>
+        <p><%= task.description %></p>
+      </li>
+    <% end %>
+  </ul>
+
+<% end %>
+
+<%= link_to 'Create New Task', new_task_path %>
