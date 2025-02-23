@@ -2,7 +2,26 @@ class TasksController < ApplicationController
     before_action :set_task, only: [:show,:edit, :update, :delete]
 
     def index
-        @tasks = Task.all
+        if params[:status].present?
+            @tasks= Task.where(status: params[:status])
+        else
+            @tasks = Task.all
+        end
+
+
+
+        if params[:sort_by].present?
+            if params[:sort_by] == 'created_at'
+              @tasks = Task.order(created_at: :desc)
+            elsif params[:sort_by] == 'updated_at'
+              @tasks = Task.order(updated_at: :desc)
+            else
+              @tasks = Task.order(created_at: :desc) # Default sorting if no match
+            end
+          else
+            @tasks = Task.order(created_at: :desc) # Default sorting if no sort_by parameter
+          end
+
     end
 
     def new
