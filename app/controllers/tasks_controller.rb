@@ -10,16 +10,12 @@ class TasksController < ApplicationController
 
 
 
-        if params[:sort_by].present?
-            if params[:sort_by] == 'created_at'
-              @tasks = Task.order(created_at: :desc)
-            elsif params[:sort_by] == 'updated_at'
-              @tasks = Task.order(updated_at: :desc)
-            else
-              @tasks = Task.order(created_at: :desc) # Default sorting if no match
-            end
+        if params[:sort_by] == 'created_at'
+            @tasks = @tasks.order(created_at: :desc) # newest tasks first
+          elsif params[:sort_by] == 'updated_at'
+            @tasks = @tasks.order(updated_at: :desc) # most recently updated tasks first
           else
-            @tasks = Task.order(created_at: :desc) # Default sorting if no sort_by parameter
+            @tasks = @tasks.order(created_at: :desc) # default to sorting by created_at
           end
 
     end
