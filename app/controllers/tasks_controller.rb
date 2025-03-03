@@ -2,7 +2,22 @@ class TasksController < ApplicationController
     before_action :set_task, only: [:show,:edit, :update, :delete]
 
     def index
-        @tasks = Task.all
+        if params[:status].present?
+            @tasks= Task.where(status: params[:status])
+        else
+            @tasks = Task.all
+        end
+
+
+
+        if params[:sort_by] == 'created_at'
+            @tasks = @tasks.order(created_at: :desc) # newest tasks first
+          elsif params[:sort_by] == 'updated_at'
+            @tasks = @tasks.order(updated_at: :desc) # most recently updated tasks first
+          else
+            @tasks = @tasks.order(created_at: :desc) # default to sorting by created_at
+          end
+
     end
 
     def new
@@ -40,7 +55,7 @@ class TasksController < ApplicationController
     private
 
     def task_params
-        params.require(:task).permit(:name, :description)
+        params.require(:task).permit(:name, :description, :status)
     end
 
     def set_task
