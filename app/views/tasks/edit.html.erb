@@ -1,23 +1,32 @@
-<h2> Edit Task </h2>
+<h2 class="form-title">📝 Edit Task</h2>
 
-<%= form_with model: @task do |f| %>
+<%= form_with model: @task, local: true, class: 'task-form' do |f| %>
+  <div class="form-group">
+    <%= f.label :name, class: 'form-label' %>
+    <%= f.text_field :name, class: 'form-input' %>
+  </div>
 
-    <p>
-      <%= f.label :name %>
-      <%= f.text_field :name %>
+  <div class="form-group">
+    <%= f.label :description, class: 'form-label' %>
+    <%= f.text_area :description, class: 'form-input' %>
+  </div>
 
-      <%= f.label :description %>
-      <%= f.text_area :description %>
+  <div class="form-group">
+    <%= f.label :status, class: 'form-label' %>
+    <div class="status-options">
+      <%= f.radio_button :status, 'completed', id: 'completed' %>
+      <%= f.label :status, 'Completed', value: 'completed', for: 'completed', class: 'radio-label' %>
 
-      <%= f.label :status %>
-      <%= f.radio_button :status, 'completed' %> completed
-      <%= f.radio_button :status, 'in_progress' %> in_progress
-      <%= f.radio_button :status, 'pending' %> pending
-    </p>
-    <p>
-     <%= f.submit %>
-    </p>
+      <%= f.radio_button :status, 'in_progress', id: 'in_progress' %>
+      <%= f.label :status, 'In Progress', value: 'in_progress', for: 'in_progress', class: 'radio-label' %>
 
+      <%= f.radio_button :status, 'pending', id: 'pending' %>
+      <%= f.label :status, 'Pending', value: 'pending', for: 'pending', class: 'radio-label' %>
+    </div>
+  </div>
 
-
+  <div class="form-actions">
+    <%= f.submit 'Save Changes', class: 'btn submit-btn' %>
+    <%= link_to 'Cancel', task_path(@task), class: 'btn cancel-btn' %>
+  </div>
 <% end %>
