@@ -1,5 +1,5 @@
 class TasksController < ApplicationController
-    before_action :set_task, only: [:show,:edit, :update, :delete]
+    before_action :set_task, only: [:show,:edit, :update, :destroy]
 
     def index
         if params[:status].present?
@@ -47,9 +47,9 @@ class TasksController < ApplicationController
         end
     end
 
-    def delete
+    def destroy
         @task.destroy
-        redirect_to @tasks, notice:"Task deleted succesfully"
+        redirect_to tasks_path, notice:"Task deleted succesfully"
     end
 
     private

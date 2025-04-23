@@ -1,20 +1,42 @@
 <% if @tasks.empty? %>
   <p>No tasks available.</p>
 <% else %>
-<%= form_with url: tasks_path, method: :get, local: true do %>
-  <%= select_tag :status, options_for_select(['pending', 'completed', 'in_progress'], params[:status]), include_blank: "All Statuses" %>
-  <%= submit_tag 'Filter' %>
-  <%= select_tag :sort_by, options_for_select([['Sort by Date Created', 'created_at'], ['Sort by Last Updated', 'updated_at']], params[:sort_by]), include_blank: "Select Sort Order" %>
-  <%= submit_tag 'Sort' %>
+  <div class="task-controls">
+    <%= form_with url: tasks_path, method: :get, local: true do %>
+      <div class="form-group">
+        <label for="status">Filter by Status:</label>
+        <%= select_tag :status,
+              options_for_select(['pending', 'completed', 'in_progress'], params[:status]),
+              include_blank: "All Statuses",
+              id: "status" %>
+      </div>
+
+      <div class="form-group">
+        <label for="sort_by">Sort Tasks:</label>
+        <%= select_tag :sort_by,
+              options_for_select([['Date Created', 'created_at'], ['Last Updated', 'updated_at']], params[:sort_by]),
+              include_blank: "Select Sort Order",
+              id: "sort_by" %>
+      </div>
+
+      <div class="form-actions">
+        <%= submit_tag 'Apply Filters', class: 'btn' %>
+        <%= link_to 'Clear Filters', tasks_path, class: 'btn btn-clear' %>
+      </div>
+    <% end %>
+  </div>
+
+  <ul class="task-list">
+    <% @tasks.each do |task| %>
+      <li class="task-item">
+        <span class="task-name"><%= task.name %></span>
+        <span class="task-status <%= task.status || 'unknown' %>">
+        <%= task.status.present? ? task.status.humanize : 'Unknown' %>
+        </span>
+
+      </li>
+    <% end %>
+  </ul>
 <% end %>
 
-
-<ul>
-  <% @tasks.each do |task| %>
-    <li><%= task.name %> - <%= task.status %></li>
-  <% end %>
-</ul>
-
-<% end %>
-
-<%= link_to 'Create New Task', new_task_path %>
+<%= link_to 'Create New Task', new_task_path, class: 'create-button' %>
